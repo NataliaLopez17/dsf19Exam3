@@ -1,4 +1,5 @@
 package ciic4020S2Exam3;
+
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -9,52 +10,49 @@ public class P4Wrapper {
 
 	// List
 	public interface List<E> extends Iterable<E> {
-		
+
 		public int size();
-		
+
 		public boolean isEmpty();
-		
+
 		public boolean isMember(E e);
 
 		public void add(E e);
-		
+
 		public void add(E e, int index);
-		
+
 		public E first();
-		
+
 		public E last();
-		
+
 		public int firstIndex(E e);
-		
+
 		public int lastIndex(E e);
-		
+
 		public E get(int index);
-		
+
 		public E replace(E e, int index);
-		
+
 		public E remove(int index);
-		
+
 		public boolean remove(E e);
-		
+
 		public int removeAll(E e);
-		
+
 		public void clear();
-		
+
 		public Object[] toArray();
-		
 
 	}
-	
-	
+
 	///////////////////// SinglyLinkedList
 	///////////
 	public static class SinglyLinkedList<E> implements List<E> {
-		
+
 		@SuppressWarnings("hiding")
-		private class SinglyLinkedListIterator<E> implements Iterator<E>{
-			
+		private class SinglyLinkedListIterator<E> implements Iterator<E> {
+
 			private Node<E> nextNode;
-			
 
 			@SuppressWarnings("unchecked")
 			public SinglyLinkedListIterator() {
@@ -73,56 +71,57 @@ public class P4Wrapper {
 					E result = this.nextNode.getElement();
 					this.nextNode = this.nextNode.getNext();
 					return result;
-				}
-				else {
+				} else {
 					throw new NoSuchElementException();
 				}
 			}
-			
+
 		}
-		
-		
+
 		// node class
-		private static class Node<E>{
+		private static class Node<E> {
 			private E element;
 			private Node<E> next;
+
 			public Node(E element, Node<E> next) {
 				super();
 				this.element = element;
 				this.next = next;
 			}
+
 			public Node() {
 				super();
 				this.element = null;
 				this.next = null;
-			
+
 			}
+
 			public E getElement() {
 				return element;
 			}
+
 			public void setElement(E element) {
 				this.element = element;
 			}
+
 			public Node<E> getNext() {
 				return next;
 			}
+
 			public void setNext(Node<E> next) {
 				this.next = next;
 			}
-			
-			
+
 		}
-		
+
 		// private fields
 		private Node<E> header;
 		private int currentSize;
-		
-		
 
 		public SinglyLinkedList() {
 			this.header = new Node<>();
 			this.currentSize = 0;
-			
+
 		}
 
 		@Override
@@ -147,34 +146,32 @@ public class P4Wrapper {
 
 		@Override
 		public void add(E e) {
-			
+
 			Node<E> temp = this.header;
 			while (temp.getNext() != null) {
 				temp = temp.getNext();
 			}
 			temp.setNext(new Node<E>(e, null));
 			this.currentSize++;
-			
+
 			// cool
-			//this.getPosition(this.size() -1).setNext(new Node<E>(e, null));
-			//this.currentSize++;
+			// this.getPosition(this.size() -1).setNext(new Node<E>(e, null));
+			// this.currentSize++;
 		}
 
 		@Override
 		public void add(E e, int index) {
-			if ((index <0) || (index > this.size())){
+			if ((index < 0) || (index > this.size())) {
 				throw new IndexOutOfBoundsException();
 			}
 			if (index == this.size()) {
 				this.add(e);
-			}
-			else {
-				Node<E> temp = null; 
+			} else {
+				Node<E> temp = null;
 				if (index == 0) {
 					temp = this.header;
-				}
-				else {
-					temp = this.getPosition(index -1);
+				} else {
+					temp = this.getPosition(index - 1);
 				}
 				// add new node
 				Node<E> newNode = new Node<>();
@@ -189,8 +186,7 @@ public class P4Wrapper {
 		public E first() {
 			if (this.isEmpty()) {
 				return null;
-			}
-			else {
+			} else {
 				return this.header.getNext().getElement();
 			}
 		}
@@ -199,14 +195,13 @@ public class P4Wrapper {
 		public E last() {
 			if (this.isEmpty()) {
 				return null;
-			}
-			else {
+			} else {
 				Node<E> temp = this.header.getNext();
 				while (temp.getNext() != null) {
 					temp = temp.getNext();
 				}
-								
-				return temp.getElement(); 
+
+				return temp.getElement();
 			}
 		}
 
@@ -214,23 +209,22 @@ public class P4Wrapper {
 		public int firstIndex(E e) {
 			int currentPosition = 0;
 			Node<E> temp = this.header.getNext();
-			
-			while(temp != null) {
+
+			while (temp != null) {
 				if (temp.getElement().equals(e)) {
 					return currentPosition;
-				}
-				else {
+				} else {
 					temp = temp.getNext();
 					currentPosition++;
 				}
 			}
 			return -1;
-			
+
 		}
 
 		@Override
 		public int lastIndex(E e) {
-			int i=0;
+			int i = 0;
 			int lastIndex = -1;
 			Node<E> temp = this.header.getNext();
 			while (temp != null) {
@@ -242,11 +236,11 @@ public class P4Wrapper {
 			}
 			return lastIndex;
 		}
-		
-		private Node<E> getPosition(int index){
+
+		private Node<E> getPosition(int index) {
 			int currentPosition = 0;
 			Node<E> temp = this.header.getNext();
-			
+
 			while (currentPosition != index) {
 				temp = temp.getNext();
 				currentPosition++;
@@ -256,7 +250,7 @@ public class P4Wrapper {
 
 		@Override
 		public E get(int index) {
-			if ((index <0) || (index >= this.currentSize)) {
+			if ((index < 0) || (index >= this.currentSize)) {
 				throw new IndexOutOfBoundsException();
 			}
 			return this.getPosition(index).getElement();
@@ -264,7 +258,7 @@ public class P4Wrapper {
 
 		@Override
 		public E replace(E e, int index) {
-			if ((index <0) || (index >= this.currentSize)) {
+			if ((index < 0) || (index >= this.currentSize)) {
 				throw new IndexOutOfBoundsException();
 			}
 			Node<E> temp = this.getPosition(index);
@@ -275,12 +269,12 @@ public class P4Wrapper {
 
 		@Override
 		public E remove(int index) {
-			if ((index < 0) || (index >= this.currentSize)){
+			if ((index < 0) || (index >= this.currentSize)) {
 				throw new IndexOutOfBoundsException();
 			}
-			int currentPosition =0;
+			int currentPosition = 0;
 			Node<E> temp = this.header;
-			while(currentPosition != index) {
+			while (currentPosition != index) {
 				temp = temp.getNext();
 				currentPosition++;
 			}
@@ -299,8 +293,7 @@ public class P4Wrapper {
 			int target = this.firstIndex(e);
 			if (target < 0) {
 				return false;
-			}
-			else {
+			} else {
 				this.remove(target);
 				return true;
 			}
@@ -317,7 +310,7 @@ public class P4Wrapper {
 
 		@Override
 		public void clear() {
-			while(!this.isEmpty()) {
+			while (!this.isEmpty()) {
 				this.remove(0);
 			}
 
@@ -326,68 +319,65 @@ public class P4Wrapper {
 		@Override
 		public Object[] toArray() {
 			Object[] result = new Object[this.size()];
-			for (int i=0; i < this.size(); ++i) {
-				result[i]= this.get(i);
+			for (int i = 0; i < this.size(); ++i) {
+				result[i] = this.get(i);
 			}
 			return result;
 		}
 
 	}
-	
-	///////////////  MAP
+
+	/////////////// MAP
 	////
 	public interface Map<K, V> {
-		
+
 		public int size();
-		
+
 		public boolean isEmpty();
-		
+
 		public V get(K key);
-		
+
 		public V put(K key, V value);
-		
+
 		public V remove(K key);
-		
+
 		public boolean contains(K key);
-		
+
 		public List<K> getKeys();
-		
-		public List<V> getValues();	
+
+		public List<V> getValues();
 
 	}
-	
+
 	////// Tree Node
 	public interface TreeNode<E> {
-		
+
 		public E getValue();
 
 	}
-	
-	
+
 	/////////
 	// Binary Tree Node
 	public interface BinaryTreeNode<E> extends TreeNode<E> {
-		
+
 		public BinaryTreeNode<E> getLeftChild();
-		
+
 		public BinaryTreeNode<E> getRightChild();
-		
+
 		public BinaryTreeNode<E> getParent();
-		
 
 	}
 
 	//////
 	/// BinaryTreeNodeImp
-	
-	public static class BinaryTreeNodeImp<E> implements BinaryTreeNode<E> {
-		
-		private E value;
-		
-		private BinaryTreeNode<E>  leftChild;
-		private BinaryTreeNode<E>  rightChild;
-		private BinaryTreeNode<E>  parent;
 
+	public static class BinaryTreeNodeImp<E> implements BinaryTreeNode<E> {
+
+		private E value;
+
+		private BinaryTreeNode<E> leftChild;
+		private BinaryTreeNode<E> rightChild;
+		private BinaryTreeNode<E> parent;
 
 		public BinaryTreeNodeImp(E value, BinaryTreeNode<E> leftChild, BinaryTreeNode<E> rightChild,
 				BinaryTreeNode<E> parent) {
@@ -434,55 +424,56 @@ public class P4Wrapper {
 			this.parent = parent;
 		}
 
-
 	}
-	
+
 	////// Key Value Pair
 	public interface KeyValuePair<K, V> {
-		
+
 		public K getKey();
+
 		public V getValue();
 
 	}
-	
-	
+
 	/// Binary Search Tree
 	public static class BinarySearchTree<K, V> implements Map<K, V> {
-		
+
 		// MapEntry class implements KeyValuePair
-		
-		private static class MapEntry<K,V> implements KeyValuePair<K,V> {
+
+		private static class MapEntry<K, V> implements KeyValuePair<K, V> {
 			private K key;
 			private V value;
-			
-			
+
 			public MapEntry(K key, V value) {
 				super();
 				this.key = key;
 				this.value = value;
 			}
+
 			public K getKey() {
 				return key;
 			}
+
 			@SuppressWarnings("unused")
 			public void setKey(K key) {
 				this.key = key;
 			}
+
 			public V getValue() {
 				return value;
 			}
+
 			@SuppressWarnings("unused")
 			public void setValue(V value) {
 				this.value = value;
-			}		
+			}
 
 		}
-			
-		
+
 		private int currentSize;
-		private BinaryTreeNode<MapEntry<K,V>> root;
+		private BinaryTreeNode<MapEntry<K, V>> root;
 		private Comparator<K> keyComparator;
-		
+
 		public BinarySearchTree(Comparator<K> keyComparator) {
 			this.root = null;
 			this.currentSize = 0;
@@ -502,22 +493,19 @@ public class P4Wrapper {
 		@Override
 		public V get(K key) {
 			return this.getAux(key, this.root);
-			
+
 		}
 
 		private V getAux(K key, BinaryTreeNode<MapEntry<K, V>> N) {
 			if (N == null) {
 				return null; // not found
-			}
-			else {
+			} else {
 				int comparison = this.keyComparator.compare(key, N.getValue().getKey());
 				if (comparison == 0) {
 					return N.getValue().getValue();
-				}
-				else if (comparison < 0) {
+				} else if (comparison < 0) {
 					return this.getAux(key, N.getLeftChild());
-				}
-				else {
+				} else {
 					return this.getAux(key, N.getRightChild());
 				}
 			}
@@ -526,51 +514,40 @@ public class P4Wrapper {
 		@Override
 		public V put(K key, V value) {
 			if (this.root == null) {
-				MapEntry<K,V> M = new MapEntry<K,V>(key, value);
-				this.root = new 
-						BinaryTreeNodeImp<MapEntry<K,V>>(M, null, null, null);
+				MapEntry<K, V> M = new MapEntry<K, V>(key, value);
+				this.root = new BinaryTreeNodeImp<MapEntry<K, V>>(M, null, null, null);
 				this.currentSize++;
 				return value;
-			}
-			else {
+			} else {
 				return this.putAux(key, value, (BinaryTreeNodeImp<MapEntry<K, V>>) this.root);
 			}
 		}
 
 		private V putAux(K key, V value, BinaryTreeNodeImp<MapEntry<K, V>> N) {
-			int comparison = this.keyComparator.compare(key,  N.getValue().getKey());
+			int comparison = this.keyComparator.compare(key, N.getValue().getKey());
 			if (comparison < 0) {
 				// left
 				if (N.getLeftChild() == null) {
-					MapEntry<K,V> M = new MapEntry<K,V>(key, value);
-					BinaryTreeNodeImp<MapEntry<K,V>> newNode =
-							new BinaryTreeNodeImp<MapEntry<K,V>> 
-					(M, null, null, N);
+					MapEntry<K, V> M = new MapEntry<K, V>(key, value);
+					BinaryTreeNodeImp<MapEntry<K, V>> newNode = new BinaryTreeNodeImp<MapEntry<K, V>>(M, null, null, N);
 					N.setLeftChild(newNode);
 					this.currentSize++;
 					return value;
+				} else {
+					return this.putAux(key, value, (BinaryTreeNodeImp<MapEntry<K, V>>) N.getLeftChild());
 				}
-				else {
-					return this.putAux(key, value, 
-							(BinaryTreeNodeImp<MapEntry<K, V>>) N.getLeftChild());
-				}
-			}
-			else {
+			} else {
 				// right
 				if (N.getRightChild() == null) {
-					MapEntry<K,V> M = new MapEntry<K,V>(key, value);
-					BinaryTreeNodeImp<MapEntry<K,V>> newNode =
-							new BinaryTreeNodeImp<MapEntry<K,V>> 
-					(M, null, null, N);
+					MapEntry<K, V> M = new MapEntry<K, V>(key, value);
+					BinaryTreeNodeImp<MapEntry<K, V>> newNode = new BinaryTreeNodeImp<MapEntry<K, V>>(M, null, null, N);
 					N.setRightChild(newNode);
 					this.currentSize++;
 					return value;
+				} else {
+					return this.putAux(key, value, (BinaryTreeNodeImp<MapEntry<K, V>>) N.getRightChild());
 				}
-				else {
-					return this.putAux(key, value, 
-							(BinaryTreeNodeImp<MapEntry<K, V>>) N.getRightChild());
-				}
-				
+
 			}
 		}
 
@@ -578,8 +555,7 @@ public class P4Wrapper {
 		public V remove(K key) {
 			if (this.root == null) {
 				return null;
-			}
-			else {
+			} else {
 				int comparison = this.keyComparator.compare(key, this.root.getValue().getKey());
 				if (comparison == 0) {
 					// remove from root
@@ -589,29 +565,26 @@ public class P4Wrapper {
 						this.root = null;
 						this.currentSize--;
 						return result;
-						
-					}
-					else if (this.root.getRightChild() == null) {
+
+					} else if (this.root.getRightChild() == null) {
 						V result = this.root.getValue().getValue();
 						this.root = this.root.getLeftChild();
 						this.currentSize--;
 						return result;
-					}
-					else {
+					} else {
 						V result = this.root.getValue().getValue();
-						BinaryTreeNodeImp<MapEntry<K, V>> S = 
-								this.smallestChild((BinaryTreeNodeImp<MapEntry<K, V>>) this.root.getRightChild());
-						((BinaryTreeNodeImp<MapEntry<K, V>>) this.root).setValue(S.getValue());;
+						BinaryTreeNodeImp<MapEntry<K, V>> S = this
+								.smallestChild((BinaryTreeNodeImp<MapEntry<K, V>>) this.root.getRightChild());
+						((BinaryTreeNodeImp<MapEntry<K, V>>) this.root).setValue(S.getValue());
+						;
 						this.removeAux(S.getValue().getKey(), this.root.getRightChild());
 						return result;
 					}
-				}
-				else if (comparison < 0) {
+				} else if (comparison < 0) {
 					// remove from left
 					return this.removeAux(key, this.root.getLeftChild());
-				}
-				else {
-					//remove right
+				} else {
+					// remove right
 					return this.removeAux(key, this.root.getRightChild());
 
 				}
@@ -627,16 +600,16 @@ public class P4Wrapper {
 			return null;
 		}
 
-		private BinaryTreeNodeImp<MapEntry<K, V>> smallestChild(
-				BinaryTreeNodeImp<MapEntry<K, V>> N) {
+		private BinaryTreeNodeImp<MapEntry<K, V>> smallestChild(BinaryTreeNodeImp<MapEntry<K, V>> N) {
 			BinaryTreeNodeImp<MapEntry<K, V>> temp = N;
-			
+
 			while (temp.getLeftChild() != null) {
 				temp = (BinaryTreeNodeImp<MapEntry<K, V>>) temp.getLeftChild();
 			}
 			return temp;
-			
+
 		}
+
 		@Override
 		public boolean contains(K key) {
 			return this.get(key) != null;
@@ -647,14 +620,13 @@ public class P4Wrapper {
 			List<K> result = new SinglyLinkedList<K>();
 			this.getKeysAux(this.root, result);
 			return result;
-			
+
 		}
 
 		private void getKeysAux(BinaryTreeNode<MapEntry<K, V>> N, List<K> result) {
 			if (N == null) {
 				return;
-			}
-			else {
+			} else {
 				this.getKeysAux(N.getLeftChild(), result);
 				result.add(N.getValue().getKey());
 				this.getKeysAux(N.getRightChild(), result);
@@ -666,74 +638,72 @@ public class P4Wrapper {
 			List<V> result = new SinglyLinkedList<V>();
 			this.getValuesAux(this.root, result);
 			return result;
-			
 
 		}
 
 		private void getValuesAux(BinaryTreeNode<MapEntry<K, V>> N, List<V> result) {
 			if (N == null) {
 				return;
-			}
-			else {
+			} else {
 				this.getValuesAux(N.getLeftChild(), result);
 				result.add(N.getValue().getValue());
 				this.getValuesAux(N.getRightChild(), result);
 			}
-			
+
 		}
 
 		public void print(PrintStream out) {
 			printAux(this.root, out, 0);
-			
-			
+
 		}
-		
-		public void printAux(BinaryTreeNode<MapEntry<K, V>> N, 
-				PrintStream out, int spaces) {
+
+		public void printAux(BinaryTreeNode<MapEntry<K, V>> N, PrintStream out, int spaces) {
 			if (N == null) {
 				return;
-			}
-			else {
+			} else {
 				printAux(N.getRightChild(), out, spaces + 4);
 				// print this values
-				for (int i=0; i< spaces; ++i) {
+				for (int i = 0; i < spaces; ++i) {
 					out.print(" ");
 				}
 				out.println(N.getValue().getKey());
 				printAux(N.getLeftChild(), out, spaces + 4);
-				
+
 			}
 		}
 
 	}
-	
-	
-	//// 
+
+	////
 	/// Integer Comparator
 	public static class IntegerComparator implements Comparator<Integer> {
-		
+
 		public IntegerComparator() {
-			
+
 		}
 
 		@Override
 		public int compare(Integer o1, Integer o2) {
 			return o1.compareTo(o2);
 		}
-		
+
 	}
+
 	/////////////////////////////////////////////////////////////////////////////////////////////
-	////   FOR STUDENTS 
-	// 
-	
+	//// FOR STUDENTS
+	//
 	/*
-	 * Write a non-member method named findNLargestValues. This method finds N largest values in a
-	 * Java array list of integers, and returns them in a new Java array list. The method receives as parameter
-	 * the array list with the original integer data, and the number N. It returns an array list the N largest
-	 * values, ORDERED from largest to smallest.
-	 * Hint: Use a Binary Search Tree to organize the data.
+	 * Write a non-member method named findNLargestValues. This method finds N
+	 * largest values in a Java array list of integers, and returns them in a new
+	 * Java array list. The method receives as parameter the array list with the
+	 * original integer data, and the number N. It returns an array list the N
+	 * largest values, ORDERED from largest to smallest. Hint: Use a Binary Search
+	 * Tree to organize the data.
 	 */
-	public static ArrayList<Integer> findNLargestValues(ArrayList<Integer> data, int N){
-			return null;
+	public static ArrayList<Integer> findNLargestValues(ArrayList<Integer> data, int N) {
+		ArrayList<Integer> L = new ArrayList<Integer>();
+		BinarySearchTree<P4Wrapper.BinarySearchTree.MapEntry<Integer, Integer>> T = new BinaryTreeNodeImp<P4Wrapper.BinarySearchTree.MapEntry<Integer, Integer>>(
+				null, null, null, null);
+		return L;
 	}
 }

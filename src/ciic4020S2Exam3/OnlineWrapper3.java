@@ -103,6 +103,23 @@ public class OnlineWrapper3 {
 		public String toString() {
 			String result = "";
 			// ADD YOUR CODE HERE
+
+			if (this.getLeftChild() == null && this.getRightChild() == null) {
+				return this + result;
+			} else {
+				if (this.getExpType() == ExpressionType.ADD) {
+					result = "(" + this.getLeftChild() + " + " + this.getRightChild() + ")";
+				}
+				if (this.getExpType() == ExpressionType.MINUS) {
+					result = "(" + this.getLeftChild() + " - " + this.getRightChild() + ")";
+				}
+				if (this.getExpType() == ExpressionType.MULT) {
+					result = "(" + this.getLeftChild() + " * " + this.getRightChild() + ")";
+				}
+				if (this.getExpType() == ExpressionType.DIV) {
+					result = "(" + this.getLeftChild() + " / " + this.getRightChild() + ")";
+				}
+			}
 			return result;
 		}
 
