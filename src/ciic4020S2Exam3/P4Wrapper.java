@@ -701,9 +701,18 @@ public class P4Wrapper {
 	 * Tree to organize the data.
 	 */
 	public static ArrayList<Integer> findNLargestValues(ArrayList<Integer> data, int N) {
-		ArrayList<Integer> L = new ArrayList<Integer>();
-		BinarySearchTree<P4Wrapper.BinarySearchTree.MapEntry<Integer, Integer>> T = new BinaryTreeNodeImp<P4Wrapper.BinarySearchTree.MapEntry<Integer, Integer>>(
-				null, null, null, null);
-		return L;
+
+		ArrayList<Integer> r = new ArrayList<Integer>();
+		BinarySearchTree<Integer, Integer> bst = new BinarySearchTree<Integer, Integer>(new IntegerComparator());
+
+		for (Integer integer : data)
+			bst.put(integer, integer);
+
+		List<Integer> vals = bst.getValues();
+
+		for (int idx = vals.size() - 1, count = 0; idx > 0 && count < N; idx--, count++)
+			r.add(vals.get(idx));
+
+		return r;
 	}
 }
